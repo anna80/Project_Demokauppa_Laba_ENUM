@@ -11,9 +11,12 @@ public abstract class BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    public void openPage(){
-    }
+    public void openPage(){    }
 
     public void openSignInPage(){}
+
+    public void openShoppingCartPage(){}
+
+    public void openProductPage(){}
 
 }

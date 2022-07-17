@@ -9,24 +9,25 @@ public class SignInPage extends BasePage{
     private static final String SIGN_IN_PAGE_URL = "http://kuopassa.net/litecart/en/create_account";
     public static final String PAGE_ID = "SignIn";
 
-    public void openSignInPage() {
-        driver.get(SIGN_IN_PAGE_URL);
-    }
-
     @FindBy(xpath = "//p[@class='text-center']")
     private WebElement buttonNewCustomers;
 
-    @FindBy(xpath = "//*[@id=\"box-account-login\"]/form/div[2]/div/input")
+    @FindBy(xpath = "//*[@id='box-account-login']/form/div[2]/div/input")
     private WebElement fieldPassword;
 
-    @FindBy(xpath = "//*[@id=\"box-account-login\"]/form/div[1]/div/input")
+    @FindBy(xpath = "//*[@id='box-account-login']/form/div[1]/div/input")
     private WebElement fieldEmail;
 
-    @FindBy(xpath = "//*[@id=\"box-account-login\"]/form/div[3]/button")
+    @FindBy(xpath = "//*[@id='box-account-login']/form/div[3]/button")
     private WebElement buttonSignIn;
 
     public SignInPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    public void openSignInPage() {
+        driver.get(SIGN_IN_PAGE_URL);
     }
 
     public boolean isButtonNewCustomersVisible(){
@@ -49,6 +50,7 @@ public class SignInPage extends BasePage{
     public boolean isButtonSignInVisible(){
         return buttonSignIn.isDisplayed();
     }
+
     public void clickButtonSignIn() {
         buttonSignIn.click();
     }
