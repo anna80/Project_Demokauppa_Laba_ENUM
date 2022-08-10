@@ -17,7 +17,7 @@ public class ShoppingCartPage extends BasePage{
     @FindBy(xpath = "//*[@id='cart']/a/div")
     private WebElement buttonShoppingCart;
 
-    @FindBy(xpath = "//*[@id='box-checkout-cart']//tbody/tr")
+    @FindBy(xpath = "//*[@id='box-checkout-cart']/div/table/tbody/tr/td[2]")
     private List<WebElement> cartItems;
 
     public ShoppingCartPage(WebDriver driver) {
@@ -40,6 +40,8 @@ public class ShoppingCartPage extends BasePage{
     }
 
     public List<WebElement> getCartProductsList() {
+        waitForPageLoadComplete();
+        waitForAjaxToComplete();
         return cartItems;
     }
 }

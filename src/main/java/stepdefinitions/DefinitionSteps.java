@@ -1,22 +1,23 @@
 package stepdefinitions;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;;
+import cucumber.Context;
+import cucumber.TestContext;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import manager.PageFactoryManager;
+import org.junit.Assert;
 import org.openqa.selenium.WebElement;
-import pages.HomePage;
-import pages.ProductPage;
-import pages.ShoppingCartPage;
-import pages.SignInPage;
+import pages.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.testng.Assert.assertEquals;
 import static utils.WaitingUtils.waitForAjaxToComplete;
 import static utils.WaitingUtils.waitForPageLoadComplete;
 
@@ -27,7 +28,11 @@ public class DefinitionSteps {
     private final ShoppingCartPage shoppingCartPage = (ShoppingCartPage) pageFactoryManager.getPage(ShoppingCartPage.PAGE_ID);
     private final SignInPage signInPage = (SignInPage) pageFactoryManager.getPage(SignInPage.PAGE_ID);
     private final HomePage homePage = (HomePage) pageFactoryManager.getPage(HomePage.PAGE_ID);
+    TestContext testContext;
 
+    public DefinitionSteps(TestContext context) {
+        testContext = context;
+    }
 
     @And("User opens {string} page")
     public void opensPage(final String pageName) {
@@ -41,9 +46,11 @@ public class DefinitionSteps {
         assertTrue("Cart icon is visible on the page", shoppingCartPage.isButtonShoppingCartVisible());
     }
 
-    @When("User clicks by the shopping cart icon")
+    @And("User clicks by the shopping cart icon")
     public void clicksByShoppingCartIcon() {
         shoppingCartPage.clickButtonShoppingCart();
+        waitForPageLoadComplete();
+        waitForAjaxToComplete();
     }
 
     @Then("Cart page with {string} url is opened")
@@ -114,20 +121,23 @@ public class DefinitionSteps {
     @And("User verify the visibility list of the {int} products")
     public void verifyVisibilityListOfProducts(final int productsCount) {
         List<WebElement> products = productPage.getProductsCards();
-        assertEquals(products.size(), productsCount);
+        Assert.assertEquals(products.size(), productsCount);
     }
 
     @Then("User checks that there are products with a price of {double}")
     public void checkThatThereAreProductsWithAPriceOf(final double expectedPrice) {
         List<Double> prices = productPage.getProductsPriceList();
         List<Double> filteredPrices = prices.stream()
-                .filter(p->p.equals(expectedPrice)).collect(Collectors.toList());
+                .filter(p -> p.equals(expectedPrice)).collect(Collectors.toList());
         assertTrue(filteredPrices.size() >= 2);
     }
 
-    @When("User clicks on the {int} product")
-    public void userClicksOnProduct(final int productNumber) {
-        productPage.clickProduct(productNumber);
+    @When("User clicks on the first product")
+    public void userClicksOnProduct() {
+        String productName = productPage.getProductName(0);
+        testContext.scenarioContext.getContext(Context.PRODUCT_NAME);
+        testContext.scenarioContext.setContext(Context.PRODUCT_NAME, productName);
+        productPage.clickProduct(0);
         waitForPageLoadComplete();
     }
 
@@ -139,8 +149,19 @@ public class DefinitionSteps {
 
     @And("User verifies that the product is added to the cart")
     public void verifyThatTheProductIsInTheCart() {
+        List<String> listProductName = new ArrayList<>();
         List<WebElement> cartProductsList = shoppingCartPage.getCartProductsList();
-//        String name = TextContext.get()
-//        assertEquals(name, cartProductsList);
+        String expectedProductName = (String) testContext.scenarioContext.getContext(Context.PRODUCT_NAME);
+        waitForPageLoadComplete();
+        waitForAjaxToComplete();
+        for (WebElement element : cartProductsList){
+            listProductName.add(element.getText());
+        }
+        waitForPageLoadComplete();
+        waitForAjaxToComplete();
+        Assert.assertEquals("Quantity of products in the cart are not as expected.", false, listProductName.contains(expectedProductName));
+
+
     }
+
 }

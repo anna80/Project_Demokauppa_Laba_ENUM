@@ -33,7 +33,7 @@ public class HomePage extends BasePage {
     }
 
     public void enterTextToSearchProduct(final String searchText) {
-        searchProduct.clear();
+//        searchProduct.clear();
         searchProduct.sendKeys(searchText);
     }
 

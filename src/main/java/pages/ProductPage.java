@@ -1,11 +1,16 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static utils.WaitingUtils.waitForAjaxToComplete;
+import static utils.WaitingUtils.waitForPageLoadComplete;
 
 public class ProductPage extends BasePage {
 
@@ -20,16 +25,10 @@ public class ProductPage extends BasePage {
     @FindBy(xpath = PRODUCTS_COMPONENT + "//span[@class='price']")
     private List<WebElement> productsPriceList;
 
-    @FindBy(xpath = "//*[@id='box-popular-products']/div/div[1]/div")
-    private WebElement firstProduct;
-
-    @FindBy(xpath = "//*[@id='box-popular-products']/div/div[1]/div/a/div[2]/div[1]")
-    private WebElement productName;
-
-    @FindBy(xpath = "//*[@id='box-popular-products']/div/div[1]/div/a/div[2]/div[3]/span")
+    @FindBy(xpath = "//[@id='box-popular-products']/div/div[1]/div/a/div[2]/div[3]/span")
     private WebElement productPrice;
 
-    @FindBy(xpath = "//*[@id='box-product']/div[1]/div[3]/div[6]/form/div[2]/div/div[2]/button")
+    @FindBy(xpath = "//button[@name='add_cart_product']")
     private WebElement buttonAddCart;
 
     public ProductPage(WebDriver driver) {
@@ -41,16 +40,22 @@ public class ProductPage extends BasePage {
         driver.get(PRODUCT_PAGE_URL);
     }
 
-    public void clickProduct(final int number) {
-        WebElement productCard = productsCards.get(number-1);
-        String productName = "Blue Duck";
-        double productPrice = 20.0;
-//        TextContext.setTextContext()
+    public void clickProduct(int productName) {
+        WebElement productCard = productsCards.get(productName);
         productCard.click();
+        waitForPageLoadComplete();
+    }
+
+    public String getProductName(int productNumber) {
+        return productsCards.get(productNumber)
+                .findElement(By.xpath("//*[@id='box-popular-products']/div/div[1]/div/a/div[2]/div[1]"))
+                .getText();
     }
 
     public void clickButtonAddCart() {
         buttonAddCart.click();
+        waitForPageLoadComplete();
+        waitForAjaxToComplete();
     }
 
     public List<WebElement> getProductsCards() {
@@ -64,5 +69,4 @@ public class ProductPage extends BasePage {
                 .map(Double::parseDouble)
                 .collect(Collectors.toList());
     }
-
 }

@@ -3,13 +3,12 @@ package stepdefinitions;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 
-import static manager.DriverManager.closeDriver;
-import static manager.DriverManager.open;
+import static manager.DriverManager.*;
 
 public class Hooks {
     @Before
     public void testsSetUp() {
-        open();
+        setup();
     }
 
     @After

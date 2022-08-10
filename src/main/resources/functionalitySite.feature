@@ -3,6 +3,7 @@ Feature: FunctionalitySite
   I want to verify a shopping cart functionality
   So that I can be sure that a shopping cart on the site works correctly
 
+  @Smoke @Regression
   Scenario: Verify that the cart is opened after clicking by shopping cart icon
     Given User opens 'Home' page
     And User verify the visibility of the cart icon
