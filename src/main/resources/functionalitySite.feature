@@ -10,6 +10,7 @@ Feature: FunctionalitySite
     When User clicks by the shopping cart icon
     Then Cart page with 'ShoppingCart' url is opened
 
+  @Smoke @Regression
   Scenario: Verify that the link is opened after clicking by link
     Given User opens 'Home' page
     And User verify the visibility of the link new customer

@@ -7,8 +7,11 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.qameta.allure.Attachment;
 import manager.PageFactoryManager;
 import org.junit.Assert;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import pages.*;
 
@@ -160,8 +163,6 @@ public class DefinitionSteps {
         waitForPageLoadComplete();
         waitForAjaxToComplete();
         Assert.assertEquals("Quantity of products in the cart are not as expected.", false, listProductName.contains(expectedProductName));
-
-
     }
 
 }

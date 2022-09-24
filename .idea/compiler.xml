@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Project_Demokauppa_Laba" />
+        <module name="Project_Demokauppa_Laba_ALLURE" />
         <module name="Project_Demokauppa_Laba_ENUM" />
       </profile>
     </annotationProcessing>
